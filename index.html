@@ -1,120 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Year 6 Math — Word Problem Assessment</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 10 — Improper Fractions ➜ Mixed Numbers</title>
 
 <style>
-body{font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;margin:0}
-.container{max-width:900px;margin:25px auto;background:#fff;padding:30px 40px;
-border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.08)}
-h1{text-align:center}
-.question{margin-bottom:18px}
-label{display:block;margin-bottom:6px}
-input[type="text"],input[type="number"]{padding:7px;border:1px solid #ccc;border-radius:6px}
-button{padding:10px 18px;border:none;border-radius:7px;background:#007bff;color:#fff;cursor:pointer}
-button:hover{background:#005fcb}
-.result{text-align:center;font-weight:bold;font-size:18px;margin-top:20px}
-.small{color:#666;font-size:13px}
+body{
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg,#edf2ff,#e6fcf5);
+  margin:0;
+}
+.container{
+  max-width: 900px;
+  margin: 30px auto;
+  background:#fff;
+  padding: 30px 40px;
+  border-radius: 18px;
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+}
+h1{
+  text-align:center;
+  margin-top:0;
+}
+.instructions{
+  text-align:center;
+  color:#555;
+  margin-bottom:15px;
+}
+.question{
+  margin:14px 0 18px;
+  padding:14px;
+  border-radius:12px;
+  background:#f8fbff;
+  border:1px solid #e5efff;
+}
+.frac{
+  display:inline-block;
+  text-align:center;
+}
+.frac sup{display:block;border-bottom:2px solid #000;padding:0 4px;font-size:18px}
+.frac sub{display:block;padding-top:2px;font-size:16px}
+.answers input{
+  width:55px;
+  padding:6px;
+  margin-right:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:15px;
+}
+.primary{background:#2f80ed;color:#fff}
+.primary:hover{background:#1f6dd2}
+.result{
+  margin-top:22px;
+  text-align:center;
+  font-size:18px;
+  font-weight:600;
+}
+footer{
+  text-align:center;
+  margin-top:25px;
+  color:#777;
+  font-size:13px;
+}
 </style>
 </head>
+
 <body>
-
 <div class="container">
-  <h1>Year 6 Math — Word Problem Assessment</h1>
 
-  <div id="nameSection">
-    <label>Enter your name:</label>
-    <input id="studentName" type="text" placeholder="Your name" />
-    <button onclick="startTest()">Start Test</button>
-  </div>
+<h1>Year 10 — Convert Improper Fractions to Mixed Fractions</h1>
+<p class="instructions">
+Write your answer as: <b>Whole</b> &nbsp; <b>Numerator</b>/<b>Denominator</b>
+</p>
 
-  <form id="quizForm" style="display:none;">
-    <p class="small">⚠️ Type numbers only. If the answer is a fraction or money, convert it to a number (e.g., 2.5 or 6.75).</p>
-    <div id="questions"></div>
-    <button type="button" onclick="submitQuiz()">Submit</button>
-  </form>
+<div id="quiz"></div>
 
-  <div id="result" class="result"></div>
+<div style="text-align:center;margin-top:20px">
+  <button class="primary" onclick="submitQuiz()">Submit</button>
+</div>
+
+<div id="result" class="result"></div>
+
+<footer>Fractions practice — auto-graded</footer>
 </div>
 
 <script>
 const questions = [
-  { q: "1) A box holds 8 apples. How many apples are in 7 boxes?", a: 56 },
-
-  { q: "2) A book costs $6.50. You buy 4 books. How much do you pay?", a: 26 },
-
-  { q: "3) A class has 30 students. 2/3 of them are girls. How many girls?", a: 20 },
-
-  { q: "4) Sarah ran 3.5 km in the morning and 2.8 km in the evening. How many km total?", a: 6.3 },
-
-  { q: "5) A pizza is cut into 12 slices. You eat 5. What fraction is left? (answer as decimal)", a: 7/12 },
-
-  { q: "6) A bus can carry 48 people. 5 buses are used. How many people can ride?", a: 240 },
-
-  { q: "7) A book has 240 pages. You read 30 pages each day. How many days to finish?", a: 8 },
-
-  { q: "8) A shop had 125 pens. It sold 47. How many pens remain?", a: 78 },
-
-  { q: "9) 30% of a number is 24. What is the number?", a: 80 },
-
-  { q: "10) A rope is 9.6 m long. You cut off 3.75 m. How much rope is left?", a: 5.85 },
-
-  { q: "11) A rectangle is 9 cm long and 4 cm wide. What is its area?", a: 36 },
-
-  { q: "12) A train leaves at 2:15 PM and arrives at 5:45 PM. How long is the trip (hours)?", a: 3.5 },
-
-  { q: "13) A packet contains 24 cookies. If you share them equally among 6 friends, how many each?", a: 4 },
-
-  { q: "14) A number is 7 more than 3 × 9. What is the number?", a: 34 },
-
-  { q: "15) A tank holds 120 L of water. 2/5 is used. How many liters are left?", a: 72 },
-
-  { q: "16) A shirt costs $18. It is discounted by $4.50. New price?", a: 13.5 },
-
-  { q: "17) A basket has 48 oranges. 1/4 are bad. How many are good?", a: 36 },
-
-  { q: "18) The perimeter of a square is 48 cm. What is the length of one side?", a: 12 },
-
-  { q: "19) A class collected 3.2 kg of plastic and 4.75 kg of paper. Total collected?", a: 7.95 },
-
-  { q: "20) A car travels 60 km in 1 hour. How far in 2.5 hours?", a: 150 }
+  { n: 17, d: 4, w: 4, rn: 1, rd: 4 },
+  { n: 29, d: 5, w: 5, rn: 4, rd: 5 },
+  { n: 45, d: 6, w: 7, rn: 3, rd: 6 },
+  { n: 22, d: 3, w: 7, rn: 1, rd: 3 },
+  { n: 51, d: 8, w: 6, rn: 3, rd: 8 },
+  { n: 19, d: 2, w: 9, rn: 1, rd: 2 },
+  { n: 34, d: 7, w: 4, rn: 6, rd: 7 },
+  { n: 67, d: 9, w: 7, rn: 4, rd: 9 },
+  { n: 26, d: 5, w: 5, rn: 1, rd: 5 },
+  { n: 83, d: 10, w: 8, rn: 3, rd: 10 }
 ];
 
-function startTest(){
-  const name=document.getElementById("studentName").value.trim();
-  if(!name){alert("Please enter your name first.");return;}
-  document.getElementById("nameSection").style.display="none";
-  document.getElementById("quizForm").style.display="block";
-  renderQuestions();
-}
-
-function renderQuestions(){
-  const c=document.getElementById("questions");
-  c.innerHTML="";
+function renderQuiz(){
+  const qdiv=document.getElementById("quiz");
+  qdiv.innerHTML="";
   questions.forEach((q,i)=>{
     const div=document.createElement("div");
     div.className="question";
     div.innerHTML=`
-      <label>${q.q}</label>
-      <input type="number" step="any" name="q${i}" required />
+      <div>
+        <b>${i+1})</b>
+        Convert 
+        <span class="frac">
+          <sup>${q.n}</sup><sub>${q.d}</sub>
+        </span>
+        into a mixed number:
+      </div>
+      <div class="answers">
+        Whole:
+        <input type="number" name="w${i}">
+        Numerator:
+        <input type="number" name="n${i}">
+        Denominator:
+        <input type="number" name="d${i}">
+      </div>
     `;
-    c.appendChild(div);
+    qdiv.appendChild(div);
   });
 }
 
+renderQuiz();
+
 function submitQuiz(){
-  const form=document.getElementById("quizForm");
   let score=0;
   questions.forEach((q,i)=>{
-    const val=parseFloat(form[`q${i}`].value);
-    if(Math.abs(val-q.a)<0.001) score++;
+    const w=parseInt(document.querySelector(`[name='w${i}']`).value);
+    const n=parseInt(document.querySelector(`[name='n${i}']`).value);
+    const d=parseInt(document.querySelector(`[name='d${i}']`).value);
+    if(w===q.w && n===q.rn && d===q.rd) score++;
   });
-  const name=document.getElementById("studentName").value.trim();
-  document.getElementById("result").innerHTML=
-    `${name}, you scored ${score} out of ${questions.length}.`;
-  form.style.display="none";
+  document.getElementById("result").innerHTML =
+    `You scored <b>${score}</b> out of <b>${questions.length}</b>.`;
 }
 </script>
 
