@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 6 Math Assessment</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f9fc;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  h1, h2 {
+    text-align: center;
+  }
+  .question {
+    margin-bottom: 20px;
+  }
+  input[type="text"] {
+    padding: 7px;
+    width: 200px;
+    margin-bottom: 20px;
+  }
+  input[type="number"] {
+    width: 70px;
+    padding: 5px;
+  }
+  button {
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .result {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Year 6 Math Assessment</h1>
+  <div id="nameSection">
+    <label for="studentName">Enter your name:</label>
+    <input type="text" id="studentName" placeholder="Your Name">
+    <button onclick="startTest()">Start Test</button>
+  </div>
+
+  <form id="quizForm" style="display:none;">
+    <div id="questions"></div>
+    <button type="button" onclick="submitQuiz()">Submit</button>
+  </form>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  const questions = [
+    { q: "15 + 8 =", a: 23 },
+    { q: "45 - 17 =", a: 28 },
+    { q: "12 × 6 =", a: 72 },
+    { q: "84 ÷ 7 =", a: 12 },
+    { q: "5² =", a: 25 },
+    { q: "√64 =", a: 8 },
+    { q: "3/4 + 1/2 =", a: 1.25 },
+    { q: "7/8 - 3/8 =", a: 0.5 },
+    { q: "What is 20% of 50?", a: 10 },
+    { q: "Round 67.4 to the nearest ten.", a: 70 },
+    { q: "50 ÷ (5 × 2) =", a: 5 },
+    { q: "6 × (4 + 3) =", a: 42 },
+    { q: "Simplify: 18 ÷ 3 + 2", a: 8 },
+    { q: "9 × 9 =", a: 81 },
+    { q: "What is 1/5 of 25?", a: 5 },
+    { q: "Convert 0.75 to fraction.", a: 3/4 },
+    { q: "Find the missing number: 8 × ? = 64", a: 8 },
+    { q: "If a = 5, find 3a + 7", a: 22 },
+    { q: "Double 36", a: 72 },
+    { q: "Half of 150", a: 75 }
+  ];
+
+  function startTest() {
+    const name = document.getElementById("studentName").value.trim();
+    if (!name) {
+      alert("Please enter your name!");
+      return;
+    }
+    document.getElementById("nameSection").style.display = "none";
+    document.getElementById("quizForm").style.display = "block";
+    renderQuestions();
+  }
+
+  function renderQuestions() {
+    const container = document.getElementById("questions");
+    container.innerHTML = "";
+    questions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.classList.add("question");
+      div.innerHTML = `
+        <label>${index + 1}. ${q.q}</label>
+        <input type="number" step="any" name="q${index}" required>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function submitQuiz() {
+    const form = document.getElementById("quizForm");
+    let score = 0;
+    questions.forEach((q, index) => {
+      const userAnswer = parseFloat(form[`q${index}`].value);
+      if (Math.abs(userAnswer - q.a) < 0.001) score++;
+    });
+    const name = document.getElementById("studentName").value.trim();
+    document.getElementById("result").innerHTML = `${name}, you scored ${score} out of ${questions.length}!`;
+    form.style.display = "none";
+  }
+</script>
+</body>
+</html>
